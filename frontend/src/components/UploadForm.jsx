@@ -11,13 +11,17 @@ function UploadForm({ onQuestionsReceived }) {
   const handleUpload = async () => {
     if (!file) return alert("Selecione um arquivo JSON!");
 
-    const formData = new FormData();
-    formData.append("file", file);
+    const text = await file.text();
+    const jsonData = JSON.parse(text);
 
     try {
-      const res = await fetch("http://localhost:5000/questions", {
+      const baseURL = import.meta.env.VITE_FLASK_API_URL;
+      const res = await fetch(`${baseURL}/questions`, {
         method: "POST",
-        body: formData,
+        headers: {
+        "Content-Type": "application/json",
+      },
+        body: JSON.stringify(jsonData),
       });
       const data = await res.json();
       onQuestionsReceived(data.questions);
@@ -34,7 +38,7 @@ function UploadForm({ onQuestionsReceived }) {
       </label>
       <span className="file-name">{file ? file.name : "Nenhum arquivo selecionado"}</span>
 
-      <button className="upload-btn" onClick={handleUpload}>
+      <button type="button" className="upload-btn" onClick={handleUpload}>
         Enviar
       </button>
     </div>

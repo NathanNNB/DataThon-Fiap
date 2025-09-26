@@ -14,11 +14,11 @@ function App() {
 
       <div className="right-pane">
         <h2>Questões recebidas</h2>
-        {questions.length === 0 ? (
+        {questions?.length === 0 ? (
           <p className="placeholder">Nenhuma questão ainda</p>
         ) : (
           <ul className="questions-list">
-            {questions.map((q, idx) => (
+            {questions?.map((q, idx) => (
               <li key={idx} className="question-item">
                 {q}
               </li>
