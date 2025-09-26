@@ -1,6 +1,5 @@
 from flask import Blueprint, request, jsonify
 
-# Cria o Blueprint
 questions = Blueprint("questions", __name__)
 
 @questions.route("", methods=["POST"])
@@ -12,5 +11,6 @@ def create_question():
 
     return jsonify({
         "status": "sucesso",
-        "received": data
+        "received": data,
+        "questions": ["Questão 1", "Questão 2", "Questão 3"]
     }), 201
