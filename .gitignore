@@ -1,4 +1,6 @@
 venv/
 data/
-GCP_BigQuery_Key.json
+owner_key.json
 .env
+models/
+offload/

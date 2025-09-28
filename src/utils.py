@@ -202,3 +202,5 @@ def adjustDataframe(df: pd.DataFrame, name_index: str, explode_df: bool = False)
     df = adjust_dtypes(df)
     df = fill_na_values(df)
     return df
+
+
