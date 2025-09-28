@@ -8,13 +8,13 @@ client = bigquery.Client.from_service_account_json(settings.GOOGLE_CREDENTIALS)
 
 
 
-vagas_df = client.list_rows("fiap-4.datathon.vagas").to_dataframe()
+vagas_df = client.list_rows("datathon-473001.datathon.vagas").to_dataframe()
 
 
 
-prospects_df = client.list_rows("fiap-4.datathon.prospects").to_dataframe()
+prospects_df = client.list_rows("datathon-473001.datathon.prospects").to_dataframe()
 
-applicants_df = client.list_rows("fiap-4.datathon.applicants").to_dataframe()
+applicants_df = client.list_rows("datathon-473001.datathon.applicants").to_dataframe()
 
 
 df = fill_na_values(vagas_df.merge(
@@ -75,4 +75,4 @@ df = df[
     ]
 ]
 
-save_bigquery(df, 'fiap-4.datathon.full_data')
+save_bigquery(df, 'datathon-473001.datathon.full_data')
