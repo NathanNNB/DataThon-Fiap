@@ -1,19 +1,20 @@
-from flask import Flask, request, jsonify
+from flask import Blueprint, request, jsonify
 from google.cloud import bigquery
 from datetime import datetime
 import uuid
 import json
 import os
 
-submit_evaluation = Blueprint("submit_evaluatio", __name__)
 
-# Configurar variável de ambiente para autenticação:
-# export GOOGLE_APPLICATION_CREDENTIALS="/caminho/para/credenciais.json"
+# --- Inicializa o cliente BigQuery ---
 client = bigquery.Client()
-TABLE_ID = "seu_projeto.seu_dataset.model_evaluations"
+TABLE_ID = "datathon-473001.datathon.evaluations"
+
+# --- Criação do Blueprint ---
+submit_evaluation = Blueprint("submit_evaluation", __name__)
 
 @submit_evaluation.route("", methods=["POST"])
-def submit_evaluation():
+def handle_submit_evaluation():
     """
     Espera receber um JSON com:
     {
@@ -35,7 +36,7 @@ def submit_evaluation():
 
     row = {
         "evaluation_id": str(uuid.uuid4()),
-        "created_at": datetime.utcnow(),
+        "created_at": datetime.utcnow().isoformat() + "Z",  # ISO 8601 UTC
         "json_sent": json.dumps(json_sent),
         "json_received": json.dumps(json_received),
         "rating": rating,
@@ -46,6 +47,6 @@ def submit_evaluation():
 
     errors = client.insert_rows_json(TABLE_ID, [row])
     if errors:
-        return jsonify({"error": errors}), 500
+        return jsonify({"error": "Erro ao inserir no BigQuery", "details": errors}), 500
 
     return jsonify({"message": "Avaliação registrada com sucesso!", "evaluation_id": row["evaluation_id"]})

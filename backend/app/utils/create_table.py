@@ -1,29 +1,38 @@
 from google.cloud import bigquery
-import uuid
-from datetime import datetime
-import json
 
-# Inicializa cliente
 client = bigquery.Client()
 
-table_id = "seu_projeto.seu_dataset.model_evaluations"
+project_id = "datathon-473001"
+dataset_id = "datathon"   # troque para o nome do seu dataset
+table_name = "evaluations"
 
-def insert_evaluation(json_sent, json_received, rating):
-    rows_to_insert = [
-        {
-            "evaluation_id": str(uuid.uuid4()),
-            "created_at": datetime.utcnow(),
-            "json_sent": json.dumps(json_sent),
-            "json_received": json.dumps(json_received),
-            "rating": rating,
-            "questions_count": len(json_received.get("questions", [])),
-            "candidate_summary": json_received.get("candidateSummary", ""),
-            "job_summary": json_received.get("jobSummary", "")
-        }
-    ]
-    
-    errors = client.insert_rows_json(table_id, rows_to_insert)
-    if errors:
-        print("Erro ao inserir avaliação:", errors)
-    else:
-        print("Avaliação inserida com sucesso!")
+# Garante que o dataset existe
+dataset_ref = bigquery.Dataset(f"{project_id}.{dataset_id}")
+try:
+    client.get_dataset(dataset_ref)
+    print(f"✅ Dataset {dataset_id} já existe.")
+except Exception:
+    dataset = client.create_dataset(dataset_ref)
+    print(f"📦 Dataset criado: {dataset.dataset_id}")
+
+# Schema da tabela
+schema = [
+    bigquery.SchemaField("evaluation_id", "STRING", mode="REQUIRED"),
+    bigquery.SchemaField("created_at", "TIMESTAMP", mode="REQUIRED"),
+    bigquery.SchemaField("json_sent", "STRING", mode="NULLABLE"),
+    bigquery.SchemaField("json_received", "STRING", mode="NULLABLE"),
+    bigquery.SchemaField("rating", "INT64", mode="NULLABLE"),
+    bigquery.SchemaField("questions_count", "INT64", mode="NULLABLE"),
+    bigquery.SchemaField("candidate_summary", "STRING", mode="NULLABLE"),
+    bigquery.SchemaField("job_summary", "STRING", mode="NULLABLE"),
+]
+
+table_id = f"{project_id}.{dataset_id}.{table_name}"
+table = bigquery.Table(table_id, schema=schema)
+
+try:
+    client.create_table(table)
+    print(f"✅ Tabela criada: {table_id}")
+except Exception as e:
+    print(f"⚠️ Erro ao criar tabela: {e}")
+
