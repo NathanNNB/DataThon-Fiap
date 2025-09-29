@@ -1,10 +1,18 @@
-from flask import Blueprint, request, jsonify
+from flask import Flask, request, jsonify
+from google.cloud import bigquery
+from datetime import datetime
+import uuid
+import json
+import os
 
-questions = Blueprint("questions", __name__)
+submit_evaluation = Blueprint("submit_evaluatio", __name__)
 
-@questions.route("", methods=["POST"])
+# Configurar variável de ambiente para autenticação:
+# export GOOGLE_APPLICATION_CREDENTIALS="/caminho/para/credenciais.json"
+client = bigquery.Client()
+TABLE_ID = "seu_projeto.seu_dataset.model_evaluations"
 
-@app.route("/submit_evaluation", methods=["POST"])
+@submit_evaluation.route("", methods=["POST"])
 def submit_evaluation():
     """
     Espera receber um JSON com:
