@@ -52,3 +52,32 @@ body {
   color: #aaa;
   font-style: italic;
 }
+
+.submit-btn {
+  background-color: #4caf50; /* verde */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 10px;
+}
+
+.submit-btn:hover {
+  background-color: #45a049; /* verde mais escuro */
+  transform: translateY(-2px);
+}
+
+.submit-btn:active {
+  background-color: #3e8e41;
+  transform: translateY(0);
+}
+
+.submit-btn:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+  transform: none;
+}
