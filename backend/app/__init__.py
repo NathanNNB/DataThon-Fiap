@@ -7,7 +7,8 @@ def create_app():
     app = Flask(__name__)
 
     # Habilita CORS em toda a aplicação
-    CORS(app)
+    CORS(app, origins=["https://storage.googleapis.com"])  # produção
+    # CORS(app, origins=["http://localhost:5173"])  # teste local, descomente se quiser
 
     # Registra o blueprint de questions
     app.register_blueprint(questions, url_prefix="/questions")

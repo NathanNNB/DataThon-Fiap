@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify
+from flask_cors import cross_origin
 from google.cloud import bigquery
 from datetime import datetime
 import uuid
 import json
-import os
 
 
 # --- Inicializa o cliente BigQuery ---
@@ -13,16 +13,12 @@ TABLE_ID = "datathon-473001.datathon.evaluations"
 # --- Criação do Blueprint ---
 submit_evaluation = Blueprint("submit_evaluation", __name__)
 
-@submit_evaluation.route("", methods=["POST"])
+@submit_evaluation.route("/", methods=["POST", "OPTIONS"], strict_slashes=False)
+@cross_origin() 
 def handle_submit_evaluation():
-    """
-    Espera receber um JSON com:
-    {
-        "json_sent": {...},
-        "json_received": {...},
-        "rating": 4
-    }
-    """
+    if request.method == "OPTIONS":
+        return jsonify({}), 200
+
     data = request.get_json()
     if not data:
         return jsonify({"error": "Nenhum JSON enviado"}), 400
@@ -50,3 +46,7 @@ def handle_submit_evaluation():
         return jsonify({"error": "Erro ao inserir no BigQuery", "details": errors}), 500
 
     return jsonify({"message": "Avaliação registrada com sucesso!", "evaluation_id": row["evaluation_id"]})
+
+
+
+
