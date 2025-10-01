@@ -1,9 +1,3 @@
-# DataThon-Fiap
-
-
-Back
-https://flask-service-1092765354740.us-central1.run.app/
-
 # Proposta de Solução
 
 ## Contexto
