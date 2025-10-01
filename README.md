@@ -4,8 +4,77 @@
 Back
 https://flask-service-1092765354740.us-central1.run.app/
 
+# Proposta de Solução
 
+## Contexto
 
+A criação de um fluxo padrão de entrevistas devido à grande diversidade de formatos de currículos e vagas recebidas.
+
+## Objetivo
+
+Desenvolver uma API capaz de automatizar o processo de análise de currículos e vagas, com foco em:
+
+Resumir informações do candidato e da vaga.
+
+Gerar perguntas estruturadas para o entrevistador, cobrindo todos os pontos essenciais da vaga.
+
+Padronizar o retorno da análise, tornando a experiência da entrevista mais eficiente e consistente.
+
+Calcular uma taxa de compatibilidade entre o currículo e a vaga, auxiliando na triagem de candidatos.
+
+## Benefícios
+
+Padronização das entrevistas.
+
+Agilidade na preparação de perguntas para entrevistadores.
+
+Avaliação objetiva da compatibilidade entre candidatos e vagas.
+
+# Desenvolvimento do Modelo
+
+Este projeto utiliza técnicas de RAG (Retrieval-Augmented Generation) e LLMs (Large Language Models) para processar dados de currículos e vagas, gerando resumos estruturados, perguntas e uma taxa de compatibilidade entre candidato e vaga.
+
+## Visão Geral da Solução
+
+### Subida e Preparação de Dados
+
+Inicialmente, os dados fornecidos em arquivos JSON são carregados em tabelas no GCP.
+
+Essas tabelas servem como base de testes durante o desenvolvimento, permitindo o aperfeiçoamento de prompts e inputs.
+
+### Criação da Tabela Tratada
+
+Após a subida, criamos uma tabela tratada que cruza dados de vagas e currículos.
+
+Esta tabela é utilizada diretamente nos scripts Python para gerar análises e resumos.
+
+### Pré-processamento de Texto
+
+Textos de vagas e currículos passam por normalização, incluindo:
+
+- Remoção de espaços desnecessários
+- Eliminação de palavras duplicadas
+- Remoção de acentos
+- Filtragem de stopwords
+
+## Testes com Diferentes Modelos LLM
+
+Foram testadas diversas arquiteturas de LLMs, tanto pelo HuggingFace quanto pelo Ollama, incluindo modelos como Gemma, DeepSeek, LLaMA, QWEN.
+
+Foram avaliados tempo de resposta e qualidade das respostas, buscando identificar a configuração ideal para a solução.
+
+## Modelo Final
+
+A versão final da solução utiliza:
+
+- Um LLM de text-generation com RAG para gerar resumos e perguntas estruturadas.
+- Um LLM de similarity com Sentence-Transformers para calcular a taxa de compatibilidade entre candidato e vaga.
+
+# STACK Utilizada
+
+- React com Vite para Frontend
+- API FLask em python para backend
+- Transformers com modelos do Hugging-Face(gemma3:4b) para o modelo final
 
 # Backend DataThon-FIAP
 
