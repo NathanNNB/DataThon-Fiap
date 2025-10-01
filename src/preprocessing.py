@@ -11,13 +11,7 @@ from nltk.corpus import stopwords
 from nltk.stem import RSLPStemmer
 from nltk import word_tokenize
 
-
-
-
-
-
 class TextPreprocessing:
-    """class responsible for TextPreprocessing methods."""
 
     def preprocess_text(
         self,

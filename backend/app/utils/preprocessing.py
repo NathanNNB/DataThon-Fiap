@@ -46,6 +46,7 @@ class TextPreprocessing:
             str: Text preprocessed.
         """
         text = self.unify_text(texts) if len(texts) > 1 else texts[0]
+        text = text.strip()
         text = text.lower() if apply_lower else text
         text = re.sub(r"[^\w\s]", " ", text) if remove_ponctuation else text
         text = re.sub(r"[0-9]+", "", text) if remove_numbers else text

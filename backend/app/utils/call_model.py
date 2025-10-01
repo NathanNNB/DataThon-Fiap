@@ -1,5 +1,5 @@
-from rag_model_test import RAGRecrutamento
-from preprocessing import TextPreprocessing
+from app.utils.model_rag import RAGRecrutamento
+from app.utils.preprocessing import TextPreprocessing
 import json
 
 # instanciar apenas uma vez
@@ -25,20 +25,20 @@ def validate_model_output(result: dict) -> tuple[bool, str]:
     Retorna (True, "") se válido ou (False, msg_erro) se inválido.
     """
     expected_keys = {
-        "resumo_candidato",
-        "resumo_vaga",
-        "perguntas_entrevista",
-        "taxa_de_compatibilidade"
+        "candidateSummary",
+        "jobSummary",
+        "questions",
+        "compatibility_rate"
     }
 
     if not isinstance(result, dict):
-        return False, "Model output must be a dictionary."
+        return False, "Model output must be a dictionary.",500
 
     missing_keys = expected_keys - result.keys()
     if missing_keys:
-        return False, f"Model output is missing required keys: {', '.join(missing_keys)}"
+        return False, 500
 
-    return True, ""
+    return True, 200
 
 def call_model(payload: str | dict) -> str:
     """
@@ -50,9 +50,9 @@ def call_model(payload: str | dict) -> str:
         try:
             payload = json.loads(payload)
         except json.JSONDecodeError:
-            return "Invalid JSON string. Provide a valid JSON with 'curriculo' and 'job_description'."
+            return "",400
     elif not isinstance(payload, dict):
-        return "Input must be a JSON string or dictionary."
+        return "Input must be a JSON string or dictionary.",400
 
     curriculo = payload.get("curriculo", "").strip()
     job_description = payload.get("job_description", "").strip()
@@ -73,4 +73,4 @@ def call_model(payload: str | dict) -> str:
     if not is_valid:
         return result, error_msg
 
-    return result, 'Retorno com sucesso.'
+    return result, 200

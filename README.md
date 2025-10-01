@@ -14,6 +14,9 @@ Este backend foi desenvolvido em Python utilizando Flask para servir rotas REST 
 ## Estrutura de Pastas
 
 ```
+## Estrutura de Pastas
+
+```
 backend/
 ├── app/
 │   ├── __init__.py
@@ -21,7 +24,6 @@ backend/
 │   │   ├── __init__.py
 │   │   ├── questions.py
 │   │   └── submit_evaluation.py
-│   ├── service/
 │   └── utils/
 │       ├── __init__.py
 │       ├── call_model.py
@@ -30,7 +32,6 @@ backend/
 │       ├── preprocessing.py
 │       ├── questions_example.json
 │       └── settings.py
-├── config/
 ├── tests/
 │   ├── test_question.py
 │   └── test_submit_evaluation.py
@@ -38,7 +39,8 @@ backend/
 ├── requirements.txt
 ├── Dockerfile
 ├── deploy.ps1
-└── gcp_key.json
+├── pytest.ini
+├── .gitignore
 ```
 
 ## Como Rodar o Projeto
